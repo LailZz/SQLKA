@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Райони{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-map-marked-alt"></i> Список районів</h2>
+<a href="{{ url_for('districts.create') }}" class="btn"><i class="fas fa-plus"></i> Додати район</a>
+<table>
+    <thead>
+        <tr>
+            <th>Код району</th>
+            <th>Назва району</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for district in districts %}
+        <tr>
+            <td>{{ district.district_code }}</td>
+            <td>{{ district.district_name }}</td>
+            <td class="actions">
+                <a href="{{ url_for('districts.show', id=district.district_code) }}" class="btn view"><i class="fas fa-eye"></i></a>
+                <a href="{{ url_for('districts.edit', id=district.district_code) }}" class="btn edit"><i class="fas fa-edit"></i></a>
+                <form action="{{ url_for('districts.delete', id=district.district_code) }}" method="POST" class="inline-form">
+                    <button type="submit" class="btn delete" onclick="return confirm('Ви впевнені, що хочете видалити цей район?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if district %}Редагування{% else %}Створення{% endif %} району{% endblock %}
+
+{% block content %}
+<h2>{% if district %}Редагування району{% else %}Створення нового району{% endif %}</h2>
+<form method="POST">
+    <div>
+        <label for="district_code">Код району:</label>
+        <input type="number" id="district_code" name="district_code" 
+               value="{{ district.district_code if district }}" {% if district %}readonly{% endif %} required>
+    </div>
+    <div>
+        <label for="district_name">Назва району:</label>
+        <input type="text" id="district_name" name="district_name" 
+               value="{{ district.district_name if district }}" required>
+    </div>
+    <button type="submit">Зберегти</button>
+    <a href="{{ url_for('districts.index') }}" class="btn cancel">Скасувати</a>
+</form>
+{% endblock %}

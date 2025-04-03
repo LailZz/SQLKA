@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if pension %}Редагування{% else %}Створення{% endif %} виду пенсії{% endblock %}
+
+{% block content %}
+<h2>{% if pension %}Редагування виду пенсії{% else %}Додавання нового виду пенсії{% endif %}</h2>
+<form method="POST">
+    <div>
+        <label for="pension_code">Код пенсії:</label>
+        <input type="number" id="pension_code" name="pension_code" 
+               value="{{ pension.pension_code if pension }}" {% if pension %}readonly{% endif %} required>
+    </div>
+    <div>
+        <label for="pension_name">Назва пенсії:</label>
+        <input type="text" id="pension_name" name="pension_name" 
+               value="{{ pension.pension_name if pension }}" required>
+    </div>
+    <button type="submit">Зберегти</button>
+    <a href="{% if pension %}{{ url_for('pensions.show', id=pension.pension_code) }}{% else %}{{ url_for('pensions.index') }}{% endif %}" 
+       class="btn cancel">Скасувати</a>
+</form>
+{% endblock %}

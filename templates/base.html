@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пенсійна система - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-piggy-bank"></i> Пенсійна система</h1>
+        <nav>
+            <a href="{{ url_for('districts.index') }}"><i class="fas fa-map-marked-alt"></i> Райони</a>
+            <a href="{{ url_for('pensioners.index') }}"><i class="fas fa-users"></i> Пенсіонери</a>
+            <a href="{{ url_for('pensions.index') }}"><i class="fas fa-file-invoice-dollar"></i> Види пенсій</a>
+            <a href="{{ url_for('payments.index') }}"><i class="fas fa-money-bill-wave"></i> Виплати</a>
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>© 2024 Пенсійна система</p>
+    </footer>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

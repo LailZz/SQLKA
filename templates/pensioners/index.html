@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Пенсіонери{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-users"></i> Список пенсіонерів</h2>
+<a href="{{ url_for('pensioners.create') }}" class="btn"><i class="fas fa-plus"></i> Додати пенсіонера</a>
+
+<div class="search-box">
+    <input type="text" id="search-input" placeholder="Пошук пенсіонерів...">
+    <button id="search-btn"><i class="fas fa-search"></i></button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Прізвище</th>
+            <th>Ім'я</th>
+            <th>По батькові</th>
+            <th>Дата народження</th>
+            <th>Район</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pensioner in pensioners %}
+        <tr>
+            <td>{{ pensioner.pensioner_id }}</td>
+            <td>{{ pensioner.last_name }}</td>
+            <td>{{ pensioner.first_name }}</td>
+            <td>{{ pensioner.middle_name if pensioner.middle_name }}</td>
+            <td>{{ pensioner.birth_date.strftime('%d.%m.%Y') }}</td>
+            <td>{{ pensioner.district.district_name }}</td>
+            <td class="actions">
+                <a href="{{ url_for('pensioners.show', id=pensioner.pensioner_id) }}" class="btn view"><i class="fas fa-eye"></i></a>
+                <a href="{{ url_for('pensioners.edit', id=pensioner.pensioner_id) }}" class="btn edit"><i class="fas fa-edit"></i></a>
+                <form action="{{ url_for('pensioners.delete', id=pensioner.pensioner_id) }}" method="POST" class="inline-form">
+                    <button type="submit" class="btn delete" onclick="return confirm('Ви впевнені, що хочете видалити цього пенсіонера?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pensioners.js') }}"></script>
+{% endblock %}

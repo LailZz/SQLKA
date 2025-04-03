@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Район {{ district.district_name }}{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-map-marked-alt"></i> Район: {{ district.district_name }}</h2>
+
+<div class="details">
+    <div>
+        <span class="label">Код району:</span>
+        <span>{{ district.district_code }}</span>
+    </div>
+    <div>
+        <span class="label">Назва:</span>
+        <span>{{ district.district_name }}</span>
+    </div>
+</div>
+
+<div class="actions">
+    <a href="{{ url_for('districts.edit', id=district.district_code) }}" class="btn edit"><i class="fas fa-edit"></i> Редагувати</a>
+    <form action="{{ url_for('districts.delete', id=district.district_code) }}" method="POST" class="inline-form">
+        <button type="submit" class="btn delete" onclick="return confirm('Ви впевнені, що хочете видалити цей район?')">
+            <i class="fas fa-trash"></i> Видалити
+        </button>
+    </form>
+    <a href="{{ url_for('districts.index') }}" class="btn"><i class="fas fa-arrow-left"></i> Назад до списку</a>
+</div>
+
+<h3>Пенсіонери цього району</h3>
+{% if pensioners %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Прізвище</th>
+            <th>Ім'я</th>
+            <th>По батькові</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pensioner in pensioners %}
+        <tr>
+            <td>{{ pensioner.pensioner_id }}</td>
+            <td>{{ pensioner.last_name }}</td>
+            <td>{{ pensioner.first_name }}</td>
+            <td>{{ pensioner.middle_name }}</td>
+            <td class="actions">
+                <a href="{{ url_for('pensioners.show', id=pensioner.pensioner_id) }}" class="btn view"><i class="fas fa-eye"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>У цьому районі немає зареєстрованих пенсіонерів.</p>
+{% endif %}
+{% endblock %}

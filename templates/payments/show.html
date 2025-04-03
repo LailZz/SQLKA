@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Виплата #{{ payment.payment_id }}{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-money-bill-wave"></i> Виплата #{{ payment.payment_id }}</h2>
+
+<div class="details">
+    <div>
+        <span class="label">Пенсіонер:</span>
+        <span>
+            <a href="{{ url_for('pensioners.show', id=payment.pensioner_id) }}">
+                {{ payment.pensioner.last_name }} {{ payment.pensioner.first_name }}
+            </a>
+        </span>
+    </div>
+    <div>
+        <span class="label">Вид пенсії:</span>
+        <span>
+            <a href="{{ url_for('pensions.show', id=payment.pension_code) }}">
+                {{ payment.pension.pension_name }}
+            </a>
+        </span>
+    </div>
+    <div>
+        <span class="label">Сума:</span>
+        <span>{{ "%.2f"|format(payment.amount) }} грн</span>
+    </div>
+    <div>
+        <span class="label">Доплата:</span>
+        <span>{{ "%.2f"|format(payment.additional_payment) }} грн</span>
+    </div>
+    <div>
+        <span class="label">Загальна сума:</span>
+        <span>{{ "%.2f"|format(payment.amount + payment.additional_payment) }} грн</span>
+    </div>
+    <div>
+        <span class="label">Дата виплати:</span>
+        <span>{{ payment.payment_date.strftime('%d.%m.%Y') }}</span>
+    </div>
+    {% if payment.additional_info %}
+    <div>
+        <span class="label">Додаткова інформація:</span>
+        <span>{{ payment.additional_info }}</span>
+    </div>
+    {% endif %}
+</div>
+
+<div class="actions">
+    <a href="{{ url_for('payments.edit', id=payment.payment_id) }}" class="btn edit"><i class="fas fa-edit"></i> Редагувати</a>
+    <form action="{{ url_for('payments.delete', id=payment.payment_id) }}" method="POST" class="inline-form">
+        <button type="submit" class="btn delete" onclick="return confirm('Ви впевнені, що хочете видалити цю виплату?')">
+            <i class="fas fa-trash"></i> Видалити
+        </button>
+    </form>
+    <a href="{{ url_for('payments.index') }}" class="btn"><i class="fas fa-arrow-left"></i> Назад до списку</a>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Види пенсій{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-file-invoice-dollar"></i> Види пенсій</h2>
+<a href="{{ url_for('pensions.create') }}" class="btn"><i class="fas fa-plus"></i> Додати вид пенсії</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Код</th>
+            <th>Назва</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pension in pensions %}
+        <tr>
+            <td>{{ pension.pension_code }}</td>
+            <td>{{ pension.pension_name }}</td>
+            <td class="actions">
+                <a href="{{ url_for('pensions.show', id=pension.pension_code) }}" class="btn view"><i class="fas fa-eye"></i></a>
+                <a href="{{ url_for('pensions.edit', id=pension.pension_code) }}" class="btn edit"><i class="fas fa-edit"></i></a>
+                <form action="{{ url_for('pensions.delete', id=pension.pension_code) }}" method="POST" class="inline-form">
+                    <button type="submit" class="btn delete" onclick="return confirm('Ви впевнені, що хочете видалити цей вид пенсії?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

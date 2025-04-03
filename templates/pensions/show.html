@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Пенсія {{ pension.pension_name }}{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-file-invoice-dollar"></i> {{ pension.pension_name }}</h2>
+
+<div class="details">
+    <div>
+        <span class="label">Код пенсії:</span>
+        <span>{{ pension.pension_code }}</span>
+    </div>
+    <div>
+        <span class="label">Назва:</span>
+        <span>{{ pension.pension_name }}</span>
+    </div>
+</div>
+
+<div class="actions">
+    <a href="{{ url_for('pensions.edit', id=pension.pension_code) }}" class="btn edit"><i class="fas fa-edit"></i> Редагувати</a>
+    <form action="{{ url_for('pensions.delete', id=pension.pension_code) }}" method="POST" class="inline-form">
+        <button type="submit" class="btn delete" onclick="return confirm('Ви впевнені, що хочете видалити цей вид пенсії?')">
+            <i class="fas fa-trash"></i> Видалити
+        </button>
+    </form>
+    <a href="{{ url_for('pensions.index') }}" class="btn"><i class="fas fa-arrow-left"></i> Назад до списку</a>
+</div>
+
+<h3><i class="fas fa-money-bill-wave"></i> Виплати за цим видом пенсії</h3>
+{% if payments %}
+<table>
+    <thead>
+        <tr>
+            <th>ID виплати</th>
+            <th>Пенсіонер</th>
+            <th>Сума</th>
+            <th>Доплата</th>
+            <th>Дата</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for payment in payments %}
+        <tr>
+            <td>{{ payment.payment_id }}</td>
+            <td>{{ payment.pensioner.last_name }} {{ payment.pensioner.first_name }}</td>
+            <td>{{ "%.2f"|format(payment.amount) }} грн</td>
+            <td>{{ "%.2f"|format(payment.additional_payment) }} грн</td>
+            <td>{{ payment.payment_date.strftime('%d.%m.%Y') }}</td>
+            <td class="actions">
+                <a href="{{ url_for('payments.show', id=payment.payment_id) }}" class="btn view"><i class="fas fa-eye"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Ще не було виплат за цим видом пенсії.</p>
+{% endif %}
+{% endblock %}
